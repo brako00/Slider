@@ -1,146 +1,96 @@
-$(document).ready(function(){
+$(document).ready(() => {
 
-    function distributeDivs(array, arrayContainer,offset) {
-        var space = 5;
-        var allDivsWidth=0;
-        var parentDivWidth=$(window).width()-arrayContainer.width();
+    //buttons on hover effect
+    $("#left").hover(()=>{
+        $("#left").css("display", "none");
+        $("#no-left").css("display", "flex");
+    });
 
-        array.each(function(index) {
-            var currentDivWidth=$(this).width();
-            
-            if(index==0)
-                var position=parentDivWidth+offset;
-            else
-                var position = (index*space) + allDivsWidth + parentDivWidth + offset;
+    $("#no-left").mouseleave(()=>{
+        $("#no-left").css("display", "none");
+        $("#left").css("display", "flex");
+    });
 
+    $("#right").hover(()=>{
+        $("#right").css("display", "none");
+        $("#no-right").css("display", "flex");
+    });
 
-            $(this).css('right', position+'px')
-          
-            allDivsWidth=currentDivWidth+allDivsWidth;
+    $("#no-right").mouseleave(()=>{
+        $("#no-right").css("display", "none");
+        $("#right").css("display", "flex");
+    });
+
+    //sliding both sliders left and disabling button for 750ms
+    const slidersLeft=()=>{
+        $("#no-left").prop("disabled", true);
+
+        slideLeft($(".top-slider"));
+        slideLeft($(".bottom-slider"));
+
+        setTimeout(()=>{
+            $("#no-left").prop("disabled", false);
+        }, 750);
+    };
+
+    const slideLeft = (slider)=>{
+
+        //calculating width of first element and animating slider
+        let widthFirst=slider.children().first().width();
+        slider.animate({
+            left: "-"+widthFirst+"px"
+        }, 500, ()=>{
+
+            //first element is moved to the end and animation is reset
+            slider.children().first().fadeOut(0, () => {
+                slider.append(slider.children().first());
+                slider.children().last().fadeIn(500);
+                slider.css("left", "0%");
+              });
         });
-      }
-    
-    distributeDivs($(".slide"), $(".top-slider"),0);
-    distributeDivs($(".slide2"), $(".bottom-slider"),$(".buttons").width());
+    };
 
-    function slide(array, arrayContainer,counter,offset,side){
-        var allWidth=0;
-        var active=array.eq(counter);
-        var notActive=array.not(array.eq(counter));
+    //sliding both sliders right and disabling button for 750ms
+    const slidersRight=()=>{
+        $("#no-right").prop("disabled", true);
 
-        //setting up indexes for notActive array
-        var MYnotActive=array.not(array.eq(counter));
-        var Mycounter=counter;
+        slideRight($(".top-slider"),"left");
+        slideRight($(".bottom-slider"),"right");
 
-        for (var i=0;i<(array.length-1);i++){
-            if(Mycounter>=array.length-1)
-                Mycounter=0;
-            
-            notActive[i]=MYnotActive.eq(Mycounter);
-            Mycounter++;
-        }
+        setTimeout(()=>{
+            $("#no-right").prop("disabled", false);
+        }, 750);
+    };
 
-        //calculating width of all child divs
-        array.each(function(){
-            allWidth=$(this).width()+allWidth;
+    const slideRight = (slider, transClass)=>{
+
+        //adding transition class to last element
+        slider.children().last().addClass("transClass");
+
+        //calculating width of last element and animating slider
+        let widthLast=slider.children().last().width();
+        slider.animate({
+            left: widthLast+"px"
+        }, 500, ()=>{
+
+            //removing transition class, last element is moved to the beginning and animation is reset
+            slider.children().last().removeClass("transClass");
+            slider.children().last().insertBefore(slider.children().first());
+            slider.css("left", "0%");     
         });
+    };
 
-        var myWidth=active.width();
-        var trueWidth=allWidth-myWidth;
+    //sliding on click
+    $("#no-left").click(slidersLeft);
+    $("#no-right").click(slidersRight);
 
-        var space = 5;
-        var allDivsWidths=0;
-        var parentDivWidth=$(window).width()-arrayContainer.width();
-
-        if(side=="left"){
-
-            //setting up position for all not active divs
-            notActive.each(function(index){
-                var goLeft=(index*space)+allDivsWidths+parentDivWidth+offset;
-                $(this).animate({
-                    right: goLeft+"px"
-                }, 750);
-
-                allDivsWidths=$(this).width()+allDivsWidths;
-            });
-
-            //setting up position for active div
-            active.css("opacity", "0");
-            active.css("right", trueWidth+space*notActive.length+parentDivWidth+offset+"px");
-
-            active.animate({
-                opacity: 1
-            },750);
-        }
-        else if(side=="right"){
-
-            //setting up position for div at the end of array
-            var pseudoActive=notActive[notActive.length-1];
-            pseudoActive.css("opacity", "0");
-            pseudoActive.css("right", space+allDivsWidths+parentDivWidth+offset);
-
-            //setting up position for active div
-            active.animate({
-                right: space+allDivsWidths+parentDivWidth+pseudoActive.width()+offset+"px"
-            },750);
-
-            //setting up position for all other not active divs
-            var pseudoNotActive=notActive.not(notActive.eq(notActive.length-1));
-            
-            pseudoNotActive.each(function(index){
-                var goRight=((index+2)*space)+allDivsWidths+parentDivWidth+pseudoActive.width()+myWidth+offset;
-                $(this).animate({
-                    right: goRight+"px"
-                }, 750);
-                allDivsWidths=$(this).width()+allDivsWidths;
-            });
-
-            notActive[notActive.length-1].animate({
-                opacity:1
-            },750);
-        }
-    }
-
-    var counter=0;
-    var counter2=0;
-
-    function slideLeft(){
-        slide($(".slide"), $(".top-slider"),counter,0,"left");
-        slide($(".slide2"),$(".bottom-slider"),counter2,$(".buttons").width(),"left");
-
-        counter++;
-        if(counter>$(".slide").length-1)
-            counter=0;
-
-        counter2++;
-        if(counter2>$(".slide2").length-1)
-            counter2=0;
-
-    }
-
-    function slideRight(){
-        slide($(".slide"), $(".top-slider"),counter,0,"right");
-        slide($(".slide2"),$(".bottom-slider"),counter2,$(".buttons").width(),"right");
-        
-        counter--;
-        if(counter<0)
-            counter=$(".slide").length-1;
-        
-        counter2--;
-        if(counter2<0)
-            counter2=$(".slide2").length-1;
-        
-    }
-
-    $("#left").click(slideLeft);
-    $("#right").click(slideRight);
-
-    $(document).on("keydown", function(e){
+    //sliding on keydown
+    $(document).on("keydown", (e)=>{
         if(e.keyCode == 37){
-            slideLeft();
+            slidersLeft();
         }
         if(e.keyCode == 39){
-            slideRight();
+            slidersRight();
         }
     });
 

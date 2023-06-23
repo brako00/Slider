@@ -1,0 +1,24 @@
+@mixin positionHeaderFooter{
+    display: flex;
+    position: fixed;
+    height: 100px;
+    width: 100%;
+    padding: 20px;
+    left: 0px;
+    right: 0px;
+
+    background: #DDDDDD;
+    border-radius: 0px 0px 5px 5px;
+}
+
+footer{
+    @include positionHeaderFooter;
+
+    bottom: 0px;
+}
+
+header{
+    @include positionHeaderFooter;
+
+    top: 0px;
+}

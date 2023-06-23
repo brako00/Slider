@@ -1,0 +1,14 @@
+@import url('https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;700&display=swap');
+@import "./HeaderFooter";
+@import "./slider";
+@import "./text";
+@import "./buttons";
+
+.container{
+    position: absolute;
+    top: 150px;
+    max-width: 940px;
+    justify-content: center;
+    display: grid;
+    grid-template-columns: 4fr 1fr;
+}

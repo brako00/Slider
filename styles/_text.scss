@@ -1,0 +1,32 @@
+$fontStyle: 'Source Sans 3', sans-serif;
+$primaryTextColor: #134880;
+$secondaryTextColor: #484A4C;
+
+@mixin textDesign($fontSize,$lineHeight,$alignItems){
+    width: 300.93px;
+    font-family: $fontStyle;
+    
+    display: flex;
+    letter-spacing: -0.2px;
+
+    font-size: $fontSize;
+    line-height: $lineHeight;
+
+    align-items: $alignItems;
+}
+
+.text{
+    margin: 10px;
+
+    h2{
+        @include textDesign(32px,38px,flex-end);
+
+        color: $primaryTextColor;
+    }
+
+    p{
+        @include textDesign(18px,26px,center);
+    
+        color: $secondaryTextColor;
+    }
+}
