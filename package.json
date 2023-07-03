@@ -1,0 +1,24 @@
+{
+  "name": "slider",
+  "version": "1.0.0",
+  "description": "Slider koji pomiće slike u lijevo ili desno ovisno na koju\r strelicu korisnik klikne. Slike se pomiću za širinu desne (zadnje) slike u\r nizu.\r Pomicanje slika je kroz animaciju.\r Poseban je zato što izlazi iz Wrappera i proteže se do kraja lijevog ruba ekrana, a\r skroz desna slika je zapravo slika u fokusu.\r Slider je beskonačan, u smislu da će na prvo mjesto uvijek dolaziti slike koje\r su izašle iz viewporta. To se odnosi na svaki red posebno. Klik na jednu strelicu\r povlači oba reda istovremeno.",
+  "main": "index.js",
+  "scripts": {
+    "build": "babel js -d lib",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/brako00/Slider.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/brako00/Slider/issues"
+  },
+  "homepage": "https://github.com/brako00/Slider#readme",
+  "devDependencies": {
+    "@babel/cli": "^7.22.5",
+    "@babel/core": "^7.22.5"
+  }
+}

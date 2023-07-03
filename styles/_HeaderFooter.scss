@@ -2,23 +2,24 @@
     display: flex;
     position: fixed;
     height: 100px;
-    width: 100%;
+    max-width: 940px;
     padding: 20px;
     left: 0px;
     right: 0px;
 
     background: #DDDDDD;
-    border-radius: 0px 0px 5px 5px;
 }
 
 footer{
     @include positionHeaderFooter;
-
+    
+    border-radius: 5px 5px 0px 0px;
     bottom: 0px;
 }
 
 header{
     @include positionHeaderFooter;
 
+    border-radius: 0px 0px 5px 5px;
     top: 0px;
 }
